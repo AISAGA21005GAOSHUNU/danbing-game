@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+  <title>舌尖上的美食：早餐店的蛋饼</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      margin: 0;
+      padding: 16px;
+      background: #f7f7fb;
+      line-height: 1.6;
+    }
+    h1, h2, h3 {
+      text-align: center;
+      margin: 8px 0;
+    }
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    .card {
+      background: #fff;
+      border-radius: 16px;
+      padding: 16px 18px 20px;
+      margin-bottom: 18px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+    }
+    .tagline {
+      text-align: center;
+      font-size: 0.9rem;
+      color: #666;
+      margin-bottom: 16px;
+    }
+    .chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 8px 0 12px;
+    }
+    .chip-btn {
+      border: 1px solid #ddd;
+      border-radius: 999px;
+      padding: 6px 14px;
+      cursor: pointer;
+      background: #fafafa;
+      font-size: 0.95rem;
+      transition: transform 0.05s ease, box-shadow 0.05s ease, background 0.1s;
+    }
+    .chip-btn.selected {
+      background: #e3f2ff;
+      border-color: #84a9ff;
+      box-shadow: 0 0 0 1px rgba(51,102,255,0.2);
+      transform: translateY(-1px);
+    }
+    .btn {
+      border-radius: 999px;
+      border: none;
+      padding: 8px 18px;
+      cursor: pointer;
+      background: #326cff;
+      color: #fff;
+      font-size: 0.95rem;
+      margin: 4px 0;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .btn.secondary {
+      background: #e0e0e0;
+      color: #333;
+    }
+    .btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+    .sentence-output {
+      border-radius: 10px;
+      background: #f3f6ff;
+      padding: 10px 12px;
+      min-height: 40px;
+      margin-top: 8px;
+      font-size: 1rem;
+    }
+    .section-title {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 6px;
+    }
+    .small-note {
+      font-size: 0.8rem;
+      color: #777;
+    }
+    .tf-item {
+      border-radius: 10px;
+      border: 1px solid #eee;
+      padding: 10px 12px;
+      margin-top: 8px;
+    }
+    .tf-buttons {
+      margin-top: 6px;
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .badge {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 999px;
+      font-size: 0.75rem;
+      margin-left: 4px;
+    }
+    .badge.correct {
+      background: #e0f7e9;
+      color: #1b7a3c;
+    }
+    .badge.wrong {
+      background: #ffe3e3;
+      color: #b3261e;
+    }
+    .explain {
+      font-size: 0.8rem;
+      color: #555;
+      margin-top: 4px;
+    }
+    .order-box {
+      border-radius: 10px;
+      border: 1px solid #eee;
+      padding: 10px 12px;
+      margin-top: 10px;
+    }
+    .pieces {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 8px 0;
+    }
+    .piece-btn {
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      padding: 6px 10px;
+      cursor: pointer;
+      background: #fafafa;
+      font-size: 0.95rem;
+    }
+    .piece-btn.used {
+      opacity: 0.4;
+      cursor: default;
+    }
+    .built {
+      margin-top: 6px;
+      font-size: 0.95rem;
+    }
+    .footer-note {
+      text-align: center;
+      font-size: 0.8rem;
+      color: #777;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <h1>舌尖上的美食：早餐店的蛋饼</h1>
+  <div class="tagline">認簡體字、練口說、玩遊戲！</div>
+
+  <!-- 關卡一：特製我的蛋餅 -->
+  <div class="card">
+    <div class="section-title">
+      <h2>關卡一：特製我的蛋饼</h2>
+      <span class="small-note">請選兩種配料，做出你的「超級蛋饼」。</span>
+    </div>
+
+    <p>配料詞彙：</p>
+    <div class="chips" id="ingredient-chips">
+      <button class="chip-btn" data-word="培根">培根</button>
+      <button class="chip-btn" data-word="玉米">玉米</button>
+      <button class="chip-btn" data-word="鲔鱼">鲔鱼</button>
+    </div>
+
+    <button class="btn secondary" id="reset-ingredients">重新選配料</button>
+    <button class="btn" id="speak-ingredients">播放句子</button>
+
+    <div class="sentence-output" id="egg-sentence">
+      我的蛋饼：＿＿＿ + ＿＿＿ 蛋饼
+    </div>
+    <div class="small-note">
+      小提示：學生可以跟著念一遍：<strong>「我的蛋饼：玉米 + 培根 蛋饼」</strong>
+    </div>
+  </div>
+
+  <!-- 關卡二：句子對不對 -->
+  <div class="card">
+    <div class="section-title">
+      <h2>關卡二：這句話對不對？</h2>
+      <span class="small-note">判斷跟「早餐蛋饼」有沒有關係、用詞對不對。</span>
+    </div>
+
+    <div id="tf-list">
+      <div class="tf-item" data-answer="false">
+        <div>1. 老板，我今天想吃鲔鱼吐司。</div>
+        <div class="tf-buttons">
+          <button class="btn secondary tf-btn" data-choice="true">✅ 正確</button>
+          <button class="btn secondary tf-btn" data-choice="false">❌ 錯誤</button>
+        </div>
+        <div class="feedback"></div>
+      </div>
+
+      <div class="tf-item" data-answer="true">
+        <div>2. 玉米蛋饼是我的早餐。</div>
+        <div class="tf-buttons">
+          <button class="btn secondary tf-btn" data-choice="true">✅ 正確</button>
+          <button class="btn secondary tf-btn" data-choice="false">❌ 錯誤</button>
+        </div>
+        <div class="feedback"></div>
+      </div>
+
+      <div class="tf-item" data-answer="false">
+        <div>3. 我要一杯培根蛋饼。</div>
+        <div class="tf-buttons">
+          <button class="btn secondary tf-btn" data-choice="true">✅ 正確</button>
+          <button class="btn secondary tf-btn" data-choice="false">❌ 錯誤</button>
+        </div>
+        <div class="feedback"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 關卡三：代號重組句子 -->
+  <div class="card">
+    <div class="section-title">
+      <h2>關卡三：用代號重組句子</h2>
+      <span class="small-note">點代號，把句子排成正確順序。</span>
+    </div>
+
+    <!-- 題目一 -->
+    <div class="order-box" data-correct="1,3,4,2">
+      <h3>題目一</h3>
+      <div>請用代號重新組合下列句子：</div>
+      <div>(1) 我　(2) 蛋饼　(3) 早餐　(4) 吃</div>
+
+      <div class="pieces">
+        <button class="piece-btn" data-id="1">1 我</button>
+        <button class="piece-btn" data-id="2">2 蛋饼</button>
+        <button class="piece-btn" data-id="3">3 早餐</button>
+        <button class="piece-btn" data-id="4">4 吃</button>
+      </div>
+
+      <div class="built">你的答案：<span class="built-seq"></span></div>
+      <div class="built">組成的句子：<span class="built-sentence"></span></div>
+      <button class="btn secondary reset-order">重來</button>
+      <div class="feedback"></div>
+    </div>
+
+    <!-- 題目二 -->
+    <div class="order-box" data-correct="3,2,4,1">
+      <h3>題目二</h3>
+      <div>請用代號重新組合下列句子：</div>
+      <div>(1) 培根　(2) 里面　(3) 蛋饼　(4) 有</div>
+
+      <div class="pieces">
+        <button class="piece-btn" data-id="1">1 培根</button>
+        <button class="piece-btn" data-id="2">2 里面</button>
+        <button class="piece-btn" data-id="3">3 蛋饼</button>
+        <button class="piece-btn" data-id="4">4 有</button>
+      </div>
+
+      <div class="built">你的答案：<span class="built-seq"></span></div>
+      <div class="built">組成的句子：<span class="built-sentence"></span></div>
+      <button class="btn secondary reset-order">重來</button>
+      <div class="feedback"></div>
+    </div>
+  </div>
+
+  <div class="footer-note">
+    建議搭配老師示範發音、學生開麥跟讀，一邊玩一邊說中文。
+  </div>
+</div>
+
+<script>
+  // ===== 關卡一：特製我的蛋饼 =====
+  const ingredientButtons = Array.from(document.querySelectorAll('#ingredient-chips .chip-btn'));
+  const eggSentence = document.getElementById('egg-sentence');
+  const resetIngredientsBtn = document.getElementById('reset-ingredients');
+  const speakBtn = document.getElementById('speak-ingredients');
+
+  function updateEggSentence() {
+    const selected = ingredientButtons.filter(btn => btn.classList.contains('selected'))
+                                      .map(btn => btn.dataset.word);
+    if (selected.length === 2) {
+      eggSentence.textContent = `我的蛋饼：${selected[0]} + ${selected[1]} 蛋饼`;
+    } else if (selected.length === 1) {
+      eggSentence.textContent = `我的蛋饼：${selected[0]} + ＿＿＿ 蛋饼`;
+    } else {
+      eggSentence.textContent = '我的蛋饼：＿＿＿ + ＿＿＿ 蛋饼';
+    }
+  }
+
+  ingredientButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const selectedCount = ingredientButtons.filter(b => b.classList.contains('selected')).length;
+      if (btn.classList.contains('selected')) {
+        btn.classList.remove('selected');
+      } else {
+        if (selectedCount >= 2) {
+          // 最多兩個配料
+          const firstSelected = ingredientButtons.find(b => b.classList.contains('selected'));
+          if (firstSelected) firstSelected.classList.remove('selected');
+        }
+        btn.classList.add('selected');
+      }
+      updateEggSentence();
+    });
+  });
+
+  resetIngredientsBtn.addEventListener('click', () => {
+    ingredientButtons.forEach(btn => btn.classList.remove('selected'));
+    updateEggSentence();
+  });
+
+  speakBtn.addEventListener('click', () => {
+    if (!('speechSynthesis' in window)) {
+      alert('這個瀏覽器不支援語音播放，可以改用老師示範唸給學生聽。');
+      return;
+    }
+    const text = eggSentence.textContent.replace(/＿/g, '空');
+    if (!text || text.includes('＿＿＿')) {
+      alert('先選好兩種配料，再聽句子～');
+      return;
+    }
+    const utter = new SpeechSynthesisUtterance(text);
+    utter.lang = 'zh-CN';
+    window.speechSynthesis.cancel();
+    window.speechSynthesis.speak(utter);
+  });
+
+  // ===== 關卡二：正誤判斷 =====
+  const tfItems = Array.from(document.querySelectorAll('.tf-item'));
+
+  tfItems.forEach(item => {
+    const answer = item.dataset.answer === 'true';
+    const buttons = item.querySelectorAll('.tf-btn');
+    const feedbackDiv = item.querySelector('.feedback');
+
+    buttons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const choice = btn.dataset.choice === 'true';
+        buttons.forEach(b => b.disabled = true);
+
+        const badge = document.createElement('span');
+        const explain = document.createElement('div');
+        explain.className = 'explain';
+
+        if (choice === answer) {
+          badge.className = 'badge correct';
+          badge.textContent = '答對了！';
+        } else {
+          badge.className = 'badge wrong';
+          badge.textContent = '再想想～';
+        }
+
+        if (item.textContent.includes('鲔鱼吐司')) {
+          explain.textContent = '這句話說想吃的是「吐司」，不是蛋饼。';
+        } else if (item.textContent.includes('玉米蛋饼是我的早餐')) {
+          explain.textContent = '這句話合理：早餐吃玉米蛋饼。';
+        } else if (item.textContent.includes('一杯培根蛋饼')) {
+          explain.textContent = '「蛋饼」應該用「一份」，不是「一杯」。';
+        }
+
+        feedbackDiv.innerHTML = '';
+        feedbackDiv.appendChild(badge);
+        feedbackDiv.appendChild(explain);
+      });
+    });
+  });
+
+  // ===== 關卡三：代號重組 =====
+  const orderBoxes = Array.from(document.querySelectorAll('.order-box'));
+
+  orderBoxes.forEach(box => {
+    const correctSeq = box.dataset.correct.split(',').map(Number);
+    const pieceButtons = Array.from(box.querySelectorAll('.piece-btn'));
+    const seqSpan = box.querySelector('.built-seq');
+    const sentenceSpan = box.querySelector('.built-sentence');
+    const feedbackDiv = box.querySelector('.feedback');
+    const resetBtn = box.querySelector('.reset-order');
+
+    let currentSeq = [];
+
+    function render() {
+      seqSpan.textContent = currentSeq.join(' - ');
+
+      // 依照選過的代號，顯示對應的中文字
+      const idToText = {};
+      pieceButtons.forEach(btn => {
+        const id = Number(btn.dataset.id);
+        const text = btn.textContent.replace(/^\d+\s*/, '');
+        idToText[id] = text;
+      });
+      const words = currentSeq.map(id => idToText[id] || '');
+      sentenceSpan.textContent = words.join(' ');
+
+      // 全部選完，就判斷
+      if (currentSeq.length === correctSeq.length) {
+        const isCorrect = currentSeq.every((v, i) => v === correctSeq[i]);
+        const badge = document.createElement('span');
+        badge.className = 'badge ' + (isCorrect ? 'correct' : 'wrong');
+        badge.textContent = isCorrect ? '順序正確！' : '順序不太對～再試一次。';
+        feedbackDiv.innerHTML = '';
+        feedbackDiv.appendChild(badge);
+
+        // 鎖定按鈕
+        pieceButtons.forEach(btn => btn.disabled = true);
+      }
+    }
+
+    pieceButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        if (btn.classList.contains('used')) return;
+        if (currentSeq.length >= correctSeq.length) return;
+
+        const id = Number(btn.dataset.id);
+        currentSeq.push(id);
+        btn.classList.add('used');
+        render();
+      });
+    });
+
+    resetBtn.addEventListener('click', () => {
+      currentSeq = [];
+      pieceButtons.forEach(btn => {
+        btn.classList.remove('used');
+        btn.disabled = false;
+      });
+      feedbackDiv.innerHTML = '';
+      render();
+    });
+
+    render();
+  });
+</script>
+</body>
+</html>
