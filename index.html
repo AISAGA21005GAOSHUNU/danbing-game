@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="zh-Hans">
 <head>
@@ -265,7 +264,7 @@
       font-size: 0.92rem;
     }
 
-    /* 翻翻樂 */
+    /* 翻翻乐 */
     .memory-grid {
       display: grid;
       grid-template-columns: repeat(4, minmax(60px, 1fr));
@@ -321,7 +320,7 @@
       box-shadow: 0 3px 8px rgba(76,175,80,0.3);
     }
 
-    /* 轉盤 */
+    /* 转盘 */
     .wheel-wrap {
       display: flex;
       flex-wrap: wrap;
@@ -353,32 +352,6 @@
       display: flex;
       align-items: center;
       justify-content: center;
-    }
-    .wheel-labels {
-      position: absolute;
-      inset: 18px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 0.8rem;
-      text-align: center;
-      pointer-events: none;
-    }
-    .wheel-item {
-      position: absolute;
-      width: 50%;
-      transform-origin: 0 50%;
-      left: 50%;
-      top: 50%;
-    }
-    .wheel-item span {
-      display: inline-block;
-      background: rgba(255,255,255,0.8);
-      padding: 2px 6px;
-      border-radius: 999px;
-      border: 1px solid rgba(255,183,77,0.6);
-      font-size: 0.75rem;
-      white-space: nowrap;
     }
     .wheel-pointer {
       position: absolute;
@@ -417,6 +390,12 @@
       border: 1px dashed #ffb74d;
       font-size: 0.95rem;
     }
+    .spin-list {
+      margin: 4px 0 0;
+      padding-left: 18px;
+      font-size: 0.8rem;
+      color: #555;
+    }
 
     .footer-note {
       text-align: center;
@@ -447,48 +426,48 @@
       <span>舌尖上的美食：早餐店的蛋饼</span>
       <span class="emoji">🥤</span>
     </div>
-    <div class="page-subtitle">認簡體字、練口說、玩遊戲：一起來早餐店上中文課！</div>
+    <div class="page-subtitle">认简体字、练口说、玩游戏：一起在早餐店上中文课！</div>
     <div class="nav-chips">
-      <div class="nav-chip">配料句型練習</div>
-      <div class="nav-chip">判斷句子對不對</div>
-      <div class="nav-chip">代號重組語序</div>
-      <div class="nav-chip">翻翻樂記單字</div>
-      <div class="nav-chip">轉盤說句子</div>
+      <div class="nav-chip">配料句型练习</div>
+      <div class="nav-chip">判断句子对不对</div>
+      <div class="nav-chip">代号重组语序</div>
+      <div class="nav-chip">翻翻乐记单词</div>
+      <div class="nav-chip">转盘说句子</div>
     </div>
   </header>
 
-  <!-- 關卡一 -->
+  <!-- 关卡一 -->
   <section class="card">
     <div class="card-inner">
       <div class="section-title">
-        <h2><span class="flag"><span>🍳</span> 關卡一：特製我的蛋饼</span></h2>
-        <span class="small-note">請選兩種配料，做出你的「超級蛋饼」，再唸出來。</span>
+        <h2><span class="flag"><span>🍳</span> 关卡一：特制我的蛋饼</span></h2>
+        <span class="small-note">请选择两种配料，做出你的「超级蛋饼」，再念出来。</span>
       </div>
-      <p>配料詞彙：</p>
+      <p>配料词汇：</p>
       <div class="chips" id="ingredient-chips">
         <button class="chip-btn" data-word="培根">培根</button>
         <button class="chip-btn" data-word="玉米">玉米</button>
         <button class="chip-btn" data-word="鲔鱼">鲔鱼</button>
       </div>
 
-      <button class="btn secondary" id="reset-ingredients">🔁 重新選配料</button>
+      <button class="btn secondary" id="reset-ingredients">🔁 重新选配料</button>
       <button class="btn" id="speak-ingredients">▶ 播放句子</button>
 
       <div class="sentence-output" id="egg-sentence">
         我的蛋饼：＿＿＿ + ＿＿＿ 蛋饼
       </div>
       <div class="small-note">
-        小提示：學生可以跟著念一遍：<strong>「我的蛋饼：玉米 + 培根 蛋饼」</strong>
+        小提示：学生可以跟着念一遍：<strong>「我的蛋饼：玉米 + 培根 蛋饼」</strong>
       </div>
     </div>
   </section>
 
-  <!-- 關卡二 -->
+  <!-- 关卡二 -->
   <section class="card">
     <div class="card-inner">
       <div class="section-title">
-        <h2><span class="flag"><span>✅</span> 關卡二：這句話對不對？</span></h2>
-        <span class="small-note">判斷跟「早餐蛋饼」有沒有關係、用詞對不對。</span>
+        <h2><span class="flag"><span>✅</span> 关卡二：这句话对不对？</span></h2>
+        <span class="small-note">判断和「早餐蛋饼」有没有关系、用词对不对。（选错可以再改）</span>
       </div>
 
       <div id="tf-list">
@@ -498,8 +477,8 @@
             <span>老板，我今天想吃鲔鱼吐司。</span>
           </div>
           <div class="tf-buttons">
-            <button class="btn secondary tf-btn" data-choice="true">✅ 正確</button>
-            <button class="btn secondary tf-btn" data-choice="false">❌ 錯誤</button>
+            <button class="btn secondary tf-btn" data-choice="true">✅ 正确</button>
+            <button class="btn secondary tf-btn" data-choice="false">❌ 错误</button>
           </div>
           <div class="feedback"></div>
         </div>
@@ -510,8 +489,8 @@
             <span>玉米蛋饼是我的早餐。</span>
           </div>
           <div class="tf-buttons">
-            <button class="btn secondary tf-btn" data-choice="true">✅ 正確</button>
-            <button class="btn secondary tf-btn" data-choice="false">❌ 錯誤</button>
+            <button class="btn secondary tf-btn" data-choice="true">✅ 正确</button>
+            <button class="btn secondary tf-btn" data-choice="false">❌ 错误</button>
           </div>
           <div class="feedback"></div>
         </div>
@@ -522,8 +501,8 @@
             <span>我要一杯培根蛋饼。</span>
           </div>
           <div class="tf-buttons">
-            <button class="btn secondary tf-btn" data-choice="true">✅ 正確</button>
-            <button class="btn secondary tf-btn" data-choice="false">❌ 錯誤</button>
+            <button class="btn secondary tf-btn" data-choice="true">✅ 正确</button>
+            <button class="btn secondary tf-btn" data-choice="false">❌ 错误</button>
           </div>
           <div class="feedback"></div>
         </div>
@@ -531,18 +510,18 @@
     </div>
   </section>
 
-  <!-- 關卡三 -->
+  <!-- 关卡三 -->
   <section class="card">
     <div class="card-inner">
       <div class="section-title">
-        <h2><span class="flag"><span>🔢</span> 關卡三：用代號重組句子</span></h2>
-        <span class="small-note">點代號，把句子排成正確順序，再唸一次完整的句子。</span>
+        <h2><span class="flag"><span>🔢</span> 关卡三：用代号重组句子</span></h2>
+        <span class="small-note">点代号，把句子排成正确顺序，再念一次完整的句子。</span>
       </div>
 
-      <!-- 題目一 -->
+      <!-- 题目一 -->
       <div class="order-box" data-correct="1,3,4,2">
-        <h3>題目一</h3>
-        <div>請用代號重新組合下列句子：</div>
+        <h3>题目一</h3>
+        <div>请用代号重新组合下列句子：</div>
         <div>(1) 我　(2) 蛋饼　(3) 早餐　(4) 吃</div>
 
         <div class="pieces">
@@ -553,15 +532,15 @@
         </div>
 
         <div class="built">你的答案：<span class="built-seq"></span></div>
-        <div class="built">組成的句子：<span class="built-sentence"></span></div>
-        <button class="btn secondary reset-order">🔁 重來</button>
+        <div class="built">组成的句子：<span class="built-sentence"></span></div>
+        <button class="btn secondary reset-order">🔁 重来</button>
         <div class="feedback"></div>
       </div>
 
-      <!-- 題目二 -->
+      <!-- 题目二 -->
       <div class="order-box" data-correct="3,2,4,1">
-        <h3>題目二</h3>
-        <div>請用代號重新組合下列句子：</div>
+        <h3>题目二</h3>
+        <div>请用代号重新组合下列句子：</div>
         <div>(1) 培根　(2) 里面　(3) 蛋饼　(4) 有</div>
 
         <div class="pieces">
@@ -572,35 +551,35 @@
         </div>
 
         <div class="built">你的答案：<span class="built-seq"></span></div>
-        <div class="built">組成的句子：<span class="built-sentence"></span></div>
-        <button class="btn secondary reset-order">🔁 重來</button>
+        <div class="built">组成的句子：<span class="built-sentence"></span></div>
+        <button class="btn secondary reset-order">🔁 重来</button>
         <div class="feedback"></div>
       </div>
     </div>
   </section>
 
-  <!-- 關卡四：翻翻樂 -->
+  <!-- 关卡四：翻翻乐 -->
   <section class="card">
     <div class="card-inner">
       <div class="section-title">
-        <h2><span class="flag"><span>🃏</span> 關卡四：早餐翻翻樂</span></h2>
-        <span class="small-note">翻牌找出一樣的兩張。邊玩邊念：玉米、培根、鲔鱼、蛋饼。</span>
+        <h2><span class="flag"><span>🃏</span> 关卡四：早餐翻翻乐</span></h2>
+        <span class="small-note">翻牌找出一样的两张。边玩边念：玉米、培根、鲔鱼、蛋饼。</span>
       </div>
       <button class="btn secondary" id="memory-reset">🔁 重新洗牌</button>
 
       <div class="memory-grid" id="memory-grid">
-        <!-- 卡片由 JS 產生 -->
+        <!-- 卡片由 JS 生成 -->
       </div>
-      <div class="small-note" id="memory-message">配對成功時，可以請學生一起唸出那一種早餐配料。</div>
+      <div class="small-note" id="memory-message">配对成功时，可以请学生一起念出那一种早餐配料。</div>
     </div>
   </section>
 
-  <!-- 關卡五：早餐轉轉樂 -->
+  <!-- 关卡五：转盘 -->
   <section class="card">
     <div class="card-inner">
       <div class="section-title">
-        <h2><span class="flag"><span>🎡</span> 關卡五：早餐轉轉樂</span></h2>
-        <span class="small-note">轉一轉，看看今天的早餐是什麼，然後說出完整的句子。</span>
+        <h2><span class="flag"><span>🎡</span> 关卡五：早餐转转乐</span></h2>
+        <span class="small-note">转一转，看看今天的早餐是什么，然后说出完整的句子。</span>
       </div>
 
       <div class="wheel-wrap">
@@ -608,32 +587,73 @@
           <div class="wheel-pointer"></div>
           <div class="wheel" id="wheel">
             <div class="wheel-center">🍽️</div>
-            <div class="wheel-labels" id="wheel-labels">
-              <!-- 文字由 JS 放 -->
-            </div>
           </div>
         </div>
 
         <div class="spin-info">
-          <p>按「轉！」之後，指針會停在一個早餐。例如：</p>
-          <p><strong>「玉米蛋饼」</strong> → 學生說：</p>
+          <p>按「转！」之后，指针会停在一个早餐。例如：</p>
+          <p><strong>「玉米蛋饼」</strong> → 学生说：</p>
           <p>👉 <strong>今天的早餐是玉米蛋饼。</strong></p>
-          <button class="btn" id="spin-btn">🎲 轉！</button>
+          <button class="btn" id="spin-btn">🎲 转！</button>
           <div class="result-box" id="spin-result">
             今天的早餐是：＿＿＿＿。
           </div>
+          <ul class="spin-list">
+            <li>玉米蛋饼</li>
+            <li>培根蛋饼</li>
+            <li>鲔鱼蛋饼</li>
+            <li>一份蛋饼 + 豆浆</li>
+            <li>玉米蛋饼 + 奶茶</li>
+            <li>鲔鱼蛋饼 + 豆浆</li>
+          </ul>
         </div>
       </div>
     </div>
   </section>
 
   <div class="footer-note">
-    小建議：可以請學生輪流操作，每轉到一樣的早餐，就加一分或畫一個笑臉，變成小小競賽。
+    小建议：可以让学生轮流转转盘，每转到一种早餐，就加一分或画一个笑脸，变成小小竞赛。
   </div>
 </div>
 
 <script>
-  // ===== 關卡一：特製我的蛋饼 =====
+  // ===== 小小按键音：给所有按钮加上音效 =====
+  let clickAudioCtx = null;
+  function playClickSound() {
+    try {
+      if (!clickAudioCtx) {
+        const AC = window.AudioContext || window.webkitAudioContext;
+        if (!AC) return;
+        clickAudioCtx = new AC();
+      }
+      const ctx = clickAudioCtx;
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = 'sine';
+      osc.frequency.value = 900;
+      const now = ctx.currentTime;
+      gain.gain.setValueAtTime(0.18, now);
+      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.12);
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.start(now);
+      osc.stop(now + 0.12);
+    } catch (e) {
+      // 如果浏览器不支持，就静默失败
+    }
+  }
+
+  // 把音效绑到所有按钮（捕获阶段，确保一定会响）
+  document.addEventListener('DOMContentLoaded', () => {
+    const allButtons = Array.from(document.querySelectorAll('button'));
+    allButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        playClickSound();
+      }, { capture: true });
+    });
+  });
+
+  // ===== 关卡一：特制我的蛋饼 =====
   const ingredientButtons = Array.from(document.querySelectorAll('#ingredient-chips .chip-btn'));
   const eggSentence = document.getElementById('egg-sentence');
   const resetIngredientsBtn = document.getElementById('reset-ingredients');
@@ -674,12 +694,12 @@
 
   speakBtn.addEventListener('click', () => {
     if (!('speechSynthesis' in window)) {
-      alert('這個瀏覽器不支援語音播放，可以改用老師示範唸給學生聽。');
+      alert('这个浏览器不支持语音播放，可以改用老师示范念给学生听。');
       return;
     }
     const text = eggSentence.textContent.replace(/＿/g, '空');
     if (!text || text.includes('＿＿＿')) {
-      alert('先選好兩種配料，再聽句子～');
+      alert('先选好两种配料，再听句子～');
       return;
     }
     const utter = new SpeechSynthesisUtterance(text);
@@ -688,7 +708,7 @@
     window.speechSynthesis.speak(utter);
   });
 
-  // ===== 關卡二：正誤判斷 =====
+  // ===== 关卡二：正误判断（可以改答案，不锁死） =====
   const tfItems = Array.from(document.querySelectorAll('.tf-item'));
 
   tfItems.forEach(item => {
@@ -699,7 +719,6 @@
     buttons.forEach(btn => {
       btn.addEventListener('click', () => {
         const choice = btn.dataset.choice === 'true';
-        buttons.forEach(b => b.disabled = true);
 
         const badge = document.createElement('span');
         const explain = document.createElement('div');
@@ -707,7 +726,7 @@
 
         if (choice === answer) {
           badge.className = 'badge correct';
-          badge.textContent = '答對了！';
+          badge.textContent = '答对了！';
         } else {
           badge.className = 'badge wrong';
           badge.textContent = '再想想～';
@@ -715,11 +734,11 @@
 
         const text = item.textContent;
         if (text.includes('鲔鱼吐司')) {
-          explain.textContent = '這句話說想吃的是「吐司」，不是蛋饼。';
+          explain.textContent = '这句话说想吃的是「吐司」，不是蛋饼。';
         } else if (text.includes('玉米蛋饼是我的早餐')) {
-          explain.textContent = '這句話合理：早餐吃玉米蛋饼。';
+          explain.textContent = '这句话合理：早餐吃玉米蛋饼。';
         } else if (text.includes('一杯培根蛋饼')) {
-          explain.textContent = '「蛋饼」應該用「一份」，不是「一杯」。';
+          explain.textContent = '「蛋饼」应该用「一份」，不是「一杯」。';
         }
 
         feedbackDiv.innerHTML = '';
@@ -729,7 +748,7 @@
     });
   });
 
-  // ===== 關卡三：代號重組 =====
+  // ===== 关卡三：代号重组 =====
   const orderBoxes = Array.from(document.querySelectorAll('.order-box'));
 
   orderBoxes.forEach(box => {
@@ -758,7 +777,7 @@
         const isCorrect = currentSeq.every((v, i) => v === correctSeq[i]);
         const badge = document.createElement('span');
         badge.className = 'badge ' + (isCorrect ? 'correct' : 'wrong');
-        badge.textContent = isCorrect ? '順序正確！' : '順序不太對～再試一次。';
+        badge.textContent = isCorrect ? '顺序正确！' : '顺序不太对～再试一次。';
         feedbackDiv.innerHTML = '';
         feedbackDiv.appendChild(badge);
         pieceButtons.forEach(btn => btn.disabled = true);
@@ -790,7 +809,7 @@
     render();
   });
 
-  // ===== 關卡四：翻翻樂 =====
+  // ===== 关卡四：翻翻乐 =====
   const memoryGrid = document.getElementById('memory-grid');
   const memoryResetBtn = document.getElementById('memory-reset');
   const memoryMessage = document.getElementById('memory-message');
@@ -811,7 +830,7 @@
     memoryLock = false;
     memoryFlipped = [];
     matchedCount = 0;
-    memoryMessage.textContent = '配對成功時，可以請學生一起唸出那一種早餐配料。';
+    memoryMessage.textContent = '配对成功时，可以请学生一起念出那一种早餐配料。';
 
     const deck = [];
     memoryItems.forEach(item => {
@@ -819,7 +838,6 @@
       deck.push({ ...item });
     });
 
-    // shuffle
     for (let i = deck.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
       [deck[i], deck[j]] = [deck[j], deck[i]];
@@ -874,9 +892,9 @@
           memoryFlipped = [];
           memoryLock = false;
           matchedCount++;
-          memoryMessage.textContent = `太棒了！你配對成功：${c1.dataset.key}。`;
+          memoryMessage.textContent = `太棒了！你配对成功：${c1.dataset.key}。`;
           if (matchedCount === memoryItems.length) {
-            memoryMessage.textContent = '全部配對完成！早餐 OK，可以開動，請大家一起唸一遍所有配料。';
+            memoryMessage.textContent = '全部配对完成！早餐 OK，可以开动，请大家一起念一遍所有配料。';
           }
         }, 450);
       } else {
@@ -893,9 +911,8 @@
   memoryResetBtn.addEventListener('click', createMemoryCards);
   createMemoryCards();
 
-  // ===== 關卡五：轉盤 =====
+  // ===== 关卡五：转盘 =====
   const wheel = document.getElementById('wheel');
-  const wheelLabels = document.getElementById('wheel-labels');
   const spinBtn = document.getElementById('spin-btn');
   const spinResult = document.getElementById('spin-result');
 
@@ -907,23 +924,6 @@
     '玉米蛋饼 + 奶茶',
     '鲔鱼蛋饼 + 豆浆'
   ];
-
-  function setupWheelLabels() {
-    wheelLabels.innerHTML = '';
-    const count = wheelOptions.length;
-    const baseAngle = 360 / count;
-    wheelOptions.forEach((text, index) => {
-      const item = document.createElement('div');
-      item.className = 'wheel-item';
-      const angle = baseAngle * index + baseAngle / 2;
-      item.style.transform = `rotate(${angle}deg) translateX(-50%)`;
-      const span = document.createElement('span');
-      span.textContent = text;
-      item.appendChild(span);
-      wheelLabels.appendChild(item);
-    });
-  }
-  setupWheelLabels();
 
   let currentRotation = 0;
   spinBtn.addEventListener('click', () => {
