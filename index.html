@@ -352,6 +352,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
+      overflow: hidden;
     }
     .wheel-pointer {
       position: absolute;
@@ -364,6 +365,7 @@
       border-right: 10px solid transparent;
       border-bottom: 18px solid #ff7043;
       filter: drop-shadow(0 2px 3px rgba(0,0,0,0.26));
+      z-index: 3;
     }
     .wheel-center {
       position: absolute;
@@ -377,7 +379,30 @@
       justify-content: center;
       font-size: 1.2rem;
       box-shadow: 0 3px 8px rgba(255,167,38,0.4);
+      z-index: 2;
     }
+    .wheel-labels {
+      position: absolute;
+      inset: 18px;
+      pointer-events: none;
+      z-index: 1;
+    }
+    .wheel-item {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform-origin: 0 0;
+    }
+    .wheel-item span {
+      display: inline-block;
+      background: rgba(255,255,255,0.9);
+      padding: 2px 6px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,183,77,0.7);
+      font-size: 0.74rem;
+      white-space: nowrap;
+    }
+
     .spin-info {
       max-width: 260px;
       font-size: 0.9rem;
@@ -586,6 +611,7 @@
         <div class="wheel-container">
           <div class="wheel-pointer"></div>
           <div class="wheel" id="wheel">
+            <div class="wheel-labels" id="wheel-labels"></div>
             <div class="wheel-center">🍽️</div>
           </div>
         </div>
@@ -617,33 +643,53 @@
 </div>
 
 <script>
-  // ===== 小小按键音：给所有按钮加上音效 =====
+  // ===== 按键音：所有按钮都有声音 =====
   let clickAudioCtx = null;
+  function ensureAudioCtx() {
+    if (clickAudioCtx) return clickAudioCtx;
+    const AC = window.AudioContext || window.webkitAudioContext;
+    if (!AC) return null;
+    clickAudioCtx = new AC();
+    return clickAudioCtx;
+  }
+
   function playClickSound() {
     try {
-      if (!clickAudioCtx) {
-        const AC = window.AudioContext || window.webkitAudioContext;
-        if (!AC) return;
-        clickAudioCtx = new AC();
-      }
-      const ctx = clickAudioCtx;
+      const ctx = ensureAudioCtx();
+      if (!ctx) return;
       const osc = ctx.createOscillator();
       const gain = ctx.createGain();
       osc.type = 'sine';
-      osc.frequency.value = 900;
       const now = ctx.currentTime;
+      osc.frequency.value = 900;
       gain.gain.setValueAtTime(0.18, now);
       gain.gain.exponentialRampToValueAtTime(0.001, now + 0.12);
       osc.connect(gain);
       gain.connect(ctx.destination);
       osc.start(now);
       osc.stop(now + 0.12);
-    } catch (e) {
-      // 如果浏览器不支持，就静默失败
-    }
+    } catch (e) {}
   }
 
-  // 把音效绑到所有按钮（捕获阶段，确保一定会响）
+  function playSpinSound(duration = 3) {
+    try {
+      const ctx = ensureAudioCtx();
+      if (!ctx) return;
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      const now = ctx.currentTime;
+      osc.type = 'triangle';
+      osc.frequency.setValueAtTime(650, now);
+      osc.frequency.linearRampToValueAtTime(250, now + duration);
+      gain.gain.setValueAtTime(0.16, now);
+      gain.gain.linearRampToValueAtTime(0.001, now + duration);
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.start(now);
+      osc.stop(now + duration);
+    } catch (e) {}
+  }
+
   document.addEventListener('DOMContentLoaded', () => {
     const allButtons = Array.from(document.querySelectorAll('button'));
     allButtons.forEach(btn => {
@@ -708,7 +754,7 @@
     window.speechSynthesis.speak(utter);
   });
 
-  // ===== 关卡二：正误判断（可以改答案，不锁死） =====
+  // ===== 关卡二：正误判断（可重选） =====
   const tfItems = Array.from(document.querySelectorAll('.tf-item'));
 
   tfItems.forEach(item => {
@@ -911,8 +957,9 @@
   memoryResetBtn.addEventListener('click', createMemoryCards);
   createMemoryCards();
 
-  // ===== 关卡五：转盘 =====
+  // ===== 关卡五：转盘（有文字＋转动有声音） =====
   const wheel = document.getElementById('wheel');
+  const wheelLabels = document.getElementById('wheel-labels');
   const spinBtn = document.getElementById('spin-btn');
   const spinResult = document.getElementById('spin-result');
 
@@ -924,6 +971,29 @@
     '玉米蛋饼 + 奶茶',
     '鲔鱼蛋饼 + 豆浆'
   ];
+
+  function setupWheelLabels() {
+    wheelLabels.innerHTML = '';
+    const count = wheelOptions.length;
+    const baseAngle = 360 / count;
+    const radius = 70; // 文字离中心的距离
+
+    wheelOptions.forEach((text, index) => {
+      const angle = baseAngle * index + baseAngle / 2;
+
+      const item = document.createElement('div');
+      item.className = 'wheel-item';
+      item.style.transform = `rotate(${angle}deg) translate(${radius}px)`;
+
+      const span = document.createElement('span');
+      span.textContent = text;
+      span.style.transform = `rotate(${-angle}deg)`;
+
+      item.appendChild(span);
+      wheelLabels.appendChild(item);
+    });
+  }
+  setupWheelLabels();
 
   let currentRotation = 0;
   spinBtn.addEventListener('click', () => {
@@ -937,6 +1007,9 @@
     currentRotation += newRotation;
     wheel.style.transform = `rotate(${currentRotation}deg)`;
     spinBtn.disabled = true;
+
+    // 转动时发出“呼呼”声
+    playSpinSound(3);
 
     setTimeout(() => {
       const breakfast = wheelOptions[chosenIndex];
